@@ -1,7 +1,7 @@
 from CDClassifier.constants import *
 import os
-from CDClassifier.utils.common import read_yaml, create_directories
-from CDClassifier.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig, TrainingConfig
+from CDClassifier.utils.common import read_yaml, create_directories, save_json
+from CDClassifier.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig, TrainingConfig, EvaluationConfig
 
 
 class ConfigurationManager:
@@ -72,3 +72,14 @@ class ConfigurationManager:
         )
 
         return training_config
+    
+    def get_evaluation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model="artifacts/training/model.h5",
+            training_data="artifacts/data_ingestion/chest_ct",
+            mlflow_uri="https://dagshub.com/susanth18/End-to-End-Chest-Cancer-Classification-using-MLflow-and-DVC.mlflow",
+            all_params=self.params,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE
+        )
+        return eval_config
